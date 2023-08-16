@@ -15,6 +15,19 @@ client = session.client('dynamodb')
 
 def get_data():
     result = []
+    # 테이블이 존재할 때 까지 대기
+    while True:
+        res = client.list_tables()
+        if len(res["TableNames"]) > 0:
+            break
+    # 테이블이 정상적으로 생성될 때 까지 대기
+    while True:
+        res = client.describe_table(
+            TableName="crawl_data"
+        )
+        if res["Table"]["TableStatus"] == "ACTIVE":
+            break
+    
     res = client.scan(
         TableName="crawl_data"
     )
