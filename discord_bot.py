@@ -9,10 +9,9 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         print(f'Message from {message.author}: {message.content}')
         command = message.content
-        user = message.author
-        print(user)
+        user = str(message.author)
         if command == "Bot command : 어제 소식 가져오기":
-            if user == "mm9372":
+            if user == "mm9372" or user == "eaglekop":
                 await message.channel.send("어제 이후의 멤버들의 카페소식을 가져옵니다.")
                 res = get_data()
                 if len(res) == 0:
