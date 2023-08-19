@@ -38,6 +38,6 @@ def get_data():
             url = data["url"]["S"]
             name = data["name"]["S"]
             result.append([name, url])
-    return result
+    return sorted(result)
 if __name__ == "__main__":
     print(get_data())
