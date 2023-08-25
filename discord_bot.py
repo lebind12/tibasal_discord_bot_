@@ -12,15 +12,15 @@ class MyClient(discord.Client):
         user = str(message.author)
         if command == "Bot command : 어제 소식 가져오기":
             if user == "mm9372" or user == "eaglekop":
-                await message.channel.send("어제 이후의 멤버들의 카페소식을 가져옵니다.")
+                await message.channel.send("어제 이후의 멤버들의 카페소식을 가져옵니다.", silent=True)
                 res = get_data()
                 if len(res) == 0:
-                    await message.channel.send("어제자 이후로 생성된 글이 없습니다.")
+                    await message.channel.send("어제자 이후로 생성된 글이 없습니다.", silent=True)
                 for r in res:
                     name, url = r
-                    await message.channel.send(name)
-                    await message.channel.send(url)
-                await message.channel.send("끝.")
+                    await message.channel.send(name, silent=True)
+                    await message.channel.send(url, silent=True)
+                await message.channel.send("끝.", silent=True)
         
         
 intents = discord.Intents.default()
