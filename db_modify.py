@@ -18,7 +18,7 @@ def get_data():
     # 테이블이 존재할 때 까지 대기
     while True:
         res = client.list_tables()
-        if len(res["TableNames"]) > 0:
+        if "crawl_data" in res["TableNames"]:
             break
     # 테이블이 정상적으로 생성될 때 까지 대기
     while True:
