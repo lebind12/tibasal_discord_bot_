@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from db_modify import get_data
 import boto3
+from botocore.config import Config
 import functools
 import typing
 import asyncio
@@ -20,6 +21,13 @@ session = boto3.Session(
     aws_secret_access_key = secret_access_key,
     region_name = region
 )
+my_config = Config(
+    connect_timeout=600, read_timeout=600,
+    retries={
+        'max_attempts': 1,
+        'mode': 'standard'
+    } 
+)
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -33,7 +41,7 @@ def to_thread(func: typing.Callable):
 
 @to_thread
 def get_search_result(search_words):
-    client = session.client('lambda')
+    client = session.client('lambda', config=my_config)
     payload = {"words": search_words}
     res = client.invoke(
         FunctionName='nonoChalice',
@@ -68,6 +76,7 @@ async def search(ctx, *args):
     
     if user == "mm9372" or user == "eaglekop":
         for word in args:
+            await ctx.send('[' + word + ']' +" 의 검색 중입니다.", silent=True)
             res = await get_search_result([word])
             print(res)
             await ctx.send('[' + word + ']' +" 의 검색 결과입니다.", silent=True)
