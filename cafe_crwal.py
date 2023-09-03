@@ -128,8 +128,8 @@ def crwal():
     options.add_argument("disable-gpu")
     options.add_argument("disable-dev-shm-usage")
     options.add_argument(f'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36')
-    service = ChromeService(executable_path=ChromeDriverManager().install())
-    # service = ChromeService(excutable_path="/usr/src/chrome/chromedriver")
+    # service = ChromeService(executable_path=ChromeDriverManager().install())
+    service = ChromeService(excutable_path="./chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
     
     # crawling

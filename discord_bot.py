@@ -40,8 +40,6 @@ async def on_message(message):
     
 @bot.command(name="검색", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
 async def search(ctx, *args):
-    res = None
-    
     print(', '.join(args))
     user = str(ctx.author)
     if len(args) == 0:
