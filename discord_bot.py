@@ -57,7 +57,7 @@ async def on_message(message):
             await message.channel.send(url, silent=True)
         await message.channel.send("끝.", silent=True)
     
-@bot.command(name="검색_test", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
+@bot.command(name="검색", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
 async def search(ctx, *args):
     res = None
     await ctx.send("검색을 시작합니다. 검색에는 최대 5분이 걸립니다.", silent=True)
