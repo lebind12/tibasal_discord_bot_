@@ -1,14 +1,25 @@
 import discord
 from discord.ext import commands
 from db_modify import get_data
-import cafe_crwal
+import boto3
 import functools
 import typing
 import asyncio
 import os
+import json
 
 intents = discord.Intents.default()
 intents.message_content = True
+
+access_key = os.environ["access_key"]
+secret_access_key = os.environ["secret_access_key"]
+region = os.environ["region"]
+
+session = boto3.Session(
+    aws_access_key_id = access_key,
+    aws_secret_access_key = secret_access_key,
+    region_name = region
+)
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -22,7 +33,16 @@ def to_thread(func: typing.Callable):
 
 @to_thread
 def get_search_result(search_words):
-    return cafe_crwal.solution(search_words)
+    client = session.client('lambda')
+
+    payload = {"words": search_words}
+    res = client.invoke(
+        FunctionName='nonoChalice',
+        InvocationType='RequestResponse',
+        Payload=json.dumps(payload)
+    )
+
+    return json.loads(res['Payload'].read())['result']
 
 @bot.command(name="어제", brief='어제 소식 가져오기', description="어제 소식을 가져옵니다.")
 async def on_message(message):
@@ -40,22 +60,24 @@ async def on_message(message):
     
 @bot.command(name="검색", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
 async def search(ctx, *args):
+    res = None
+    await ctx.send("검색을 시작합니다. 검색에는 최대 5분이 걸립니다.", silent=True)
     print(', '.join(args))
-    await ctx.send("검색기능 개발중입니다 ㅎㅎ;", silent=True)
-    # user = str(ctx.author)
-    # if len(args) == 0:
-    #     await ctx.send("검색어가 없습니다.", silent=True)
+    user = str(ctx.author)
+    if len(args) == 0:
+        await ctx.send("검색어가 없습니다.", silent=True)
     
-    # if user == "mm9372" or user == "eaglekop":
-    #     res = await get_search_result(args)
-    #     await ctx.send('[' + ', '.join(args) + ']' +" 의 검색 결과입니다.", silent=True)
-    #     if res == "ERROR":
-    #         await ctx.send("검색 중 에러가 발생했습니다.", silent=True)
-    #     if len(res) == 0:
-    #         await ctx.send("검색결과가 없습니다.", silent=True)
-    #     for r in res:
-    #         name, url = r
-    #         await ctx.send(name, silent=True)
-    #         await ctx.send(url, silent=True)
-    #     await ctx.send("끝.", silent=True)
+    if user == "mm9372" or user == "eaglekop":
+        res = await get_search_result(args)
+        print(res)
+        await ctx.send('[' + ', '.join(args) + ']' +" 의 검색 결과입니다.", silent=True)
+        if res == "ERROR":
+            await ctx.send("검색 중 에러가 발생했습니다.", silent=True)
+        if len(res) == 0:
+            await ctx.send("검색결과가 없습니다.", silent=True)
+        for r in res:
+            name, url = r
+            await ctx.send(name, silent=True)
+            await ctx.send(url, silent=True)
+        await ctx.send("끝.", silent=True)
 bot.run(os.environ["discord_token"])
