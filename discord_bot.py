@@ -34,7 +34,6 @@ def to_thread(func: typing.Callable):
 @to_thread
 def get_search_result(search_words):
     client = session.client('lambda')
-
     payload = {"words": search_words}
     res = client.invoke(
         FunctionName='nonoChalice',
@@ -58,7 +57,7 @@ async def on_message(message):
             await message.channel.send(url, silent=True)
         await message.channel.send("끝.", silent=True)
     
-@bot.command(name="검색", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
+@bot.command(name="검색_test", brief='까페 검색', description="멤버들 까페에 검색 후 검색데이터를 가져옵니다.\n5분 내외의 시간이 걸릴 수 있습니다.")
 async def search(ctx, *args):
     res = None
     await ctx.send("검색을 시작합니다. 검색에는 최대 5분이 걸립니다.", silent=True)
@@ -68,16 +67,18 @@ async def search(ctx, *args):
         await ctx.send("검색어가 없습니다.", silent=True)
     
     if user == "mm9372" or user == "eaglekop":
-        res = await get_search_result(args)
-        print(res)
-        await ctx.send('[' + ', '.join(args) + ']' +" 의 검색 결과입니다.", silent=True)
-        if res == "ERROR":
-            await ctx.send("검색 중 에러가 발생했습니다.", silent=True)
-        if len(res) == 0:
-            await ctx.send("검색결과가 없습니다.", silent=True)
-        for r in res:
-            name, url = r
-            await ctx.send(name, silent=True)
-            await ctx.send(url, silent=True)
-        await ctx.send("끝.", silent=True)
+        for word in args:
+            res = await get_search_result([word])
+            print(res)
+            await ctx.send('[' + word + ']' +" 의 검색 결과입니다.", silent=True)
+            if res == "ERROR":
+                await ctx.send("검색 중 에러가 발생했습니다.", silent=True)
+            if len(res) == 0:
+                await ctx.send('[' + word + ']' + "검색결과가 없습니다.", silent=True)
+            for r in res:
+                name, url = r
+                await ctx.send(name, silent=True)
+                await ctx.send(url, silent=True)
+            await ctx.send('[' + word + '] 의 검색 결과는 여기까지입니다.', silent=True)
+        await ctx.send("진짜 끝.", silent=True)
 bot.run(os.environ["discord_token"])
