@@ -210,3 +210,6 @@ def solution(searching_word : list):
                 return "ERROR"
         break
     return sorted(res)
+
+if __name__ == "__main__":
+    solution(["9호"])

@@ -22,7 +22,7 @@ session = boto3.Session(
     region_name = region
 )
 my_config = Config(
-    connect_timeout=600, read_timeout=600,
+    connect_timeout=900, read_timeout=900,
     retries={
         'max_attempts': 1,
         'mode': 'standard'
