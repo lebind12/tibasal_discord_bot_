@@ -33,7 +33,8 @@ cafe_list = [
     "9nineho",
     "qooigloo",
     "owo0611",
-    "zechupgook"
+    "zechupgook",
+    "forcigardan"
 ]
 cafe_id = {
     "gristmill" : "30854332",
@@ -48,7 +49,9 @@ cafe_id = {
     "9nineho" : "30736552",
     "qooigloo" : "30723228",
     "owo0611" : "30909560",
-    "zechupgook" : "30934090"
+    "zechupgook" : "30934090",
+    "forcigardan":"30947273"
+    
 }
 
 cafe_owner = {
@@ -64,7 +67,8 @@ cafe_owner = {
     "9nineho" : "9호",
     "qooigloo" : "쿠우",
     "owo0611" : "단츄",
-    "zechupgook" : "임재천"
+    "zechupgook" : "임재천",
+    "forcigardan" : "지니피아"
 }
 
 search_word = [
