@@ -6,6 +6,7 @@ access_key = os.environ["access_key"]
 secret_access_key = os.environ["secret_access_key"]
 region = os.environ["region"]
 
+
 session = boto3.Session(
     aws_access_key_id = access_key,
     aws_secret_access_key = secret_access_key,
