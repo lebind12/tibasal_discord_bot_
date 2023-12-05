@@ -2,6 +2,10 @@ import boto3
 import os
 
 
+# ENV Loader
+from dotenv import load_dotenv
+load_dotenv()
+
 access_key = os.environ["access_key"]
 secret_access_key = os.environ["secret_access_key"]
 region = os.environ["region"]

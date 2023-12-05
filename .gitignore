@@ -1,2 +1,5 @@
 enviroment.txt
 __pycache__
+.env
+test_jone.py
+mariadb_test.py
